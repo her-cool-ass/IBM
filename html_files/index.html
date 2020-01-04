@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<!--
+
+2) write RESTful simple API with dummy data (also choose whatever way you see fit for this task,
+it is up to your creativity and skills) and showcase how the front-end would be able to use
+your solution
+
+after running node rest.js, open http://localhost:3000/
+
+This is just a simple frontend.
+Current functionality:
+- you can view all existing pets
+- you can add new pets
+
+Functionality that can be added in future:
+- get a specific pet
+- put, delete requests on Frontend
+- CSS formatting
+- error handling
+
+-->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Frontend</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        $("#getPets").click(function (){
+          getData();
+        });
+
+        $("#setPets").click(function(){
+          var name = $("#name").val();
+          var species = $("#spec").val();
+          fetch('/api/pets', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            name: name,
+            species: species
+            })
+          });
+          getData();
+        });
+      });
+
+      function getData(){
+        $.ajax({
+          url: "api/pets/",
+          type: "GET",
+          dataType: "json",
+          success: (data) => {
+              $("#info").text(JSON.stringify(data));
+            console.log(data);
+          }
+        });
+      }
+
+    </script>
+  </head>
+  <body>
+
+    <button type="button" id="getPets" name="button">Get all pets</button>
+    <br>
+    <input id="spec" type="text" name="species" placeholder="species">
+    <input id="name" type="text" name="name" placeholder = "name">
+    <button type="button" id="setPets" name="button">set pet</button>
+    <div id="info">outputs here</div>
+    <br>
+
+  </body>
+</html>
